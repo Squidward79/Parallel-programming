@@ -27,7 +27,6 @@ int main(int, char**)
 
 	for (;;)
 	{
-
 		clock_t st = clock();
 
 		//웹캡으로부터 한 프레임을 읽어옴  
@@ -46,17 +45,13 @@ int main(int, char**)
 			GaussianBlur(gray, edge, Size(3, 3), 0, 0); 
 
 			clock_t ho1 = clock();
-
 			cout << "gray & blur time: " << ho1 - st << endl;
 
 			Mat contours;
 			Canny(edge, contours, 10, 350);   
 
 			clock_t ho2 = clock();
-
 			cout << "canny time: " << ho2 - ho1 << endl;
-
-			
 
 			const int diagonal = sqrt(width * width + height * height);
 
@@ -70,8 +65,6 @@ int main(int, char**)
 
 			int *HoughSpace = (int*)malloc(sizeof(int)*HoughSpace_size);
 			memset(HoughSpace, 0, sizeof(int)*HoughSpace_size);
-	
-
 	
 			for (int y = 0; y < height; y++)
 			{
@@ -116,7 +109,6 @@ int main(int, char**)
 						cv::Point start_point(x1, y1);
 						cv::Point end_point(x2, y2);
 						line(frame1, start_point, end_point, cv::Scalar(255, 255, 0), 1);
-					
 					}
 				}
 			}
@@ -127,7 +119,6 @@ int main(int, char**)
 			cout << "total time: " << ho4 - st << endl << endl << endl << endl << endl;
 
 			//imshow("canny", contours);
-
 			imshow("video2", frame1);
 		}
 
