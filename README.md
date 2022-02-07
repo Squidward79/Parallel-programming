@@ -7,6 +7,17 @@ CUDA를 사용한 병렬 프로그래밍 프로젝트
 ## 사용한 툴 
 C++ / CUDA / OpenCV
 
+<h2>
+  
+[프로젝트 PPT](parallel-programming.pdf)  
+  
+[CPU에 적용한 C++ 소스코드](cpu.cpp)  
+  
+[GPU에 적용한 CUDA 소스코드](gpu.cu)
+  
+</h2>
+
+
 ## 설명 
 GPU와 CPU의 영상처리 성능비교를 위해 동일한 영상에 대해 같은 알고리즘을 처리하는 속도를 확인합니다.  
 같은 알고리즘을 GPU에서는 CUDA를 사용하여 병렬 프로그래밍으로 처리하도록 작성하였습니다.  
@@ -26,12 +37,4 @@ GPU와 CPU의 영상처리 성능비교를 위해 동일한 영상에 대해 같
 위의 동일한 알고리즘으로 CPU와 GPU 각각의 수행시간을 비교하였습니다.  
 그 결과 CPU에 비해 GPU를 사용할 경우 약 20배정도 빠른 속도를 보여주었습니다.
 
-<h2>
-  
-[프로젝트 PPT](parallel-programming.pdf)  
-  
-[CPU에 적용한 C++ 소스코드](cpu.cpp)  
-  
-[GPU에 적용한 CUDA 소스코드](gpu.cu)
-  
-  </h2>
+
