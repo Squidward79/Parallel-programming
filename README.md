@@ -7,6 +7,8 @@ CUDA를 사용한 병렬 프로그래밍 프로젝트
 ## 사용한 툴 
 C++ / CUDA / OpenCV
 
+
+## 발표자료 & 소스코드
 <h2>
   
 [프로젝트 PPT](parallel-programming.pdf)  
