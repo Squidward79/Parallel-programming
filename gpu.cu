@@ -30,7 +30,6 @@ void colorToGray(Mat &src, unsigned char *output);
 __global__ void rgb_2_grey(unsigned char *greyImage, uchar3 *color, int rows, int columns);
 
 
-
 unsigned char *pHostContourImage;
 unsigned char *pDevContourImage;
 
@@ -41,7 +40,7 @@ int main(int, char**)
 
 	if (!cap2.isOpened())
 	{
-		printf("µøøµªÛ ∆ƒ¿œ¿ª ø≠ºˆ æ¯Ω¿¥œ¥Ÿ. \n");
+		printf("ÎèôÏòÅÏÉÅ ÌååÏùºÏùÑ Ïó¥Ïàò ÏóÜÏäµÎãàÎã§. \n");
 	}
 
 	cap2.set(CAP_PROP_FRAME_WIDTH, WIDTH);
@@ -53,16 +52,13 @@ int main(int, char**)
 	int width = WIDTH;
 	int height = HEIGHT;
 
-
 	int *dev_houghspace;
 
 	int count = 0;
 
 	for (;;)
 	{
-
-
-		//¿•ƒ∏¿∏∑Œ∫Œ≈Õ «— «¡∑π¿”¿ª ¿–æÓø»  
+		//ÏõπÏ∫°ÏúºÎ°úÎ∂ÄÌÑ∞ Ìïú ÌîÑÎ†àÏûÑÏùÑ ÏùΩÏñ¥Ïò¥  
 		cap2 >> frame1;
 		count++;
 
@@ -79,34 +75,27 @@ int main(int, char**)
 			unsigned char *uGray = gray.data;
 			unsigned char *uEdge = edge.data;
 
-			//cvtColor(frame1, gray, COLOR_BGR2GRAY); //±◊∑π¿Ã Ω∫ƒ…¿œ∑Œ
+			//cvtColor(frame1, gray, COLOR_BGR2GRAY); //Í∑∏Î†àÏù¥ Ïä§ÏºÄÏùºÎ°ú
 			colorToGray(frame1, uGray);
 
 			//cout << frame1.type() << endl;
 			//imshow("grayVideio", gray);
 
 			cout << "Size: "<< gray.cols << " ,  " << gray.rows << endl;
-			//GaussianBlur(gray, edge, Size(5, 5), 0, 0); //Ω«¡¶ ±∏«ˆø°º≠¥¬ ¿‘∑¬ øµªÛ ¿⁄√º∞° 0.5∑Œ Ω∫π´µ˘µ«æ˙¥Ÿ∞Ì ∞°¡§«‘.
+			//GaussianBlur(gray, edge, Size(5, 5), 0, 0); //Ïã§Ï†ú Íµ¨ÌòÑÏóêÏÑúÎäî ÏûÖÎ†• ÏòÅÏÉÅ ÏûêÏ≤¥Í∞Ä 0.5Î°ú Ïä§Î¨¥Îî©ÎêòÏóàÎã§Í≥† Í∞ÄÏ†ïÌï®.
 			GaussianEdge(uGray, uEdge);
 
 			clock_t ho1 = clock();
-
 			cout << "gray & blur time: " << ho1 - st << endl;
 
 			Mat contours(height, width, CV_8UC1);
-
 			Canny(edge, contours, 10, 350); 
-
 			clock_t ho2 = clock();
 
 			cout << "canny time: " << ho2 - ho1 << endl;
-
-			/*¿±¿Á*/
-
-
 			const int diagonal = sqrt(width * width + height * height);
 
-			//«„«¡ ∫Ø»Ø ±∏«ˆ
+			//ÌóàÌîÑ Î≥ÄÌôò Íµ¨ÌòÑ
 			int HoughSpace_width = 180;
 			int HoughSpace_height = diagonal * 2;
 			int HoughSpace_size = HoughSpace_height * HoughSpace_width;
@@ -142,12 +131,11 @@ int main(int, char**)
 			}
 
 			clock_t ho3 = clock();
-
 			cout << "hough time: " << ho3 - ho2 << endl;
 
 			cudaStatus = cudaMemcpy(HoughSpace, dev_houghspace, sizeof(int)*HoughSpace_size, cudaMemcpyDeviceToHost);
 
-			//voting¿Ã ≥°≥≠ rtheta∆Ú∏È¿ª xy∆Ú∏È¿∏∑Œ µ«µπ∏Æ∞Ì º±¿ª ±ﬂ¥¬ ∞˙¡§
+			//votingÏù¥ ÎÅùÎÇú rthetaÌèâÎ©¥ÏùÑ xyÌèâÎ©¥ÏúºÎ°ú ÎêòÎèåÎ¶¨Í≥† ÏÑ†ÏùÑ Í∏ãÎäî Í≥ºÏ†ï
 			for (int r = 0; r < HoughSpace_height; r++) {
 				for (int angle = 0; angle < HoughSpace_width; angle++)
 				{
@@ -170,8 +158,7 @@ int main(int, char**)
 						}
 						cv::Point start_point(x1, y1);
 						cv::Point end_point(x2, y2);
-						line(frame1, start_point, end_point, cv::Scalar(255, 255, 0), 1);
-						
+						line(frame1, start_point, end_point, cv::Scalar(255, 255, 0), 1);			
 					}
 				}
 			}
@@ -180,7 +167,6 @@ int main(int, char**)
 			cout << "drawing time: " << ho4 - ho3 << endl;
 			cout << "total time: " << ho4 - st << endl << endl << endl << endl << endl;
 
-
 			Mat outputMedia = frame1;
 			int ch = waitKey(30);
 			if (ch == '1') outputMedia = frame1;
@@ -188,16 +174,15 @@ int main(int, char**)
 			else if (ch == '3') outputMedia = edge;
 			else if (ch == '4') outputMedia = contours;
 
-
 			imshow("video", outputMedia);
 			//imshow("video", frame1);
 			//imshow("video2", contours);
 		}
 
-		//30ms ¡§µµ ¥Î±‚«œµµ∑œ «ÿæﬂ µøøµªÛ¿Ã ≥ π´ ª°∏Æ ¿Áª˝µ«¡ˆ æ ¿Ω.
+		//30ms Ï†ïÎèÑ ÎåÄÍ∏∞ÌïòÎèÑÎ°ù Ìï¥Ïïº ÎèôÏòÅÏÉÅÏù¥ ÎÑàÎ¨¥ Îπ®Î¶¨ Ïû¨ÏÉùÎêòÏßÄ ÏïäÏùå.
 		if (count > 120) {
 			if (waitKey(30) == 27)
-				break; //ESC≈∞ ¥©∏£∏È ¡æ∑·  
+				break; //ESCÌÇ§ ÎàÑÎ•¥Î©¥ Ï¢ÖÎ£å  
 		}
 	}
 	return 0;
@@ -223,7 +208,7 @@ __global__ void HoughTransform(unsigned char* src, int* houghspace, int centerX,
 		//atomicAdd(&houghspace[r * 180 + angle], 1);   //voting
 		//if (src[i*WIDTH + j] > 0)
 			atomicAdd(&houghspace[temp], 1);
-		//180 = houghspace_width ¿Œµ• ¥Î√º«‘, Ω√∞£≥™∏È ¿Œºˆ ≥÷±‚
+		//180 = houghspace_width Ïù∏Îç∞ ÎåÄÏ≤¥Ìï®, ÏãúÍ∞ÑÎÇòÎ©¥ Ïù∏Ïàò ÎÑ£Í∏∞
 	}
 	}
 }
@@ -250,7 +235,6 @@ __global__ void HoughTransform2(unsigned char* src, int* houghspace, int centerX
 			if (src[i * WIDTH + j] > 0) {
 
 				atomicAdd(&houghspace[r * 180 + angle], 1);   //voting
-															  //180 = houghspace_width ¿Œµ• ¥Î√º«‘, Ω√∞£≥™∏È ¿Œºˆ ≥÷±‚
 			}
 		}
 	}
@@ -269,7 +253,7 @@ void colorToGray(Mat &src, unsigned char *output)
 	cudaMalloc((void**)&dev_src, color);
 	cudaMalloc((void**)&dev_output, gray);
 
-	//devsrc∑Œ src∏¶ color* ªÁ¿Ã¡Ó∏∏≈≠ ∏ﬁ∏∏Æ ∫πªÁ 
+	//devsrcÎ°ú srcÎ•º color* ÏÇ¨Ïù¥Ï¶àÎßåÌÅº Î©îÎ™®Î¶¨ Î≥µÏÇ¨ 
 	cudaMemcpy(dev_src, src.ptr(), color, cudaMemcpyHostToDevice);
 
 	dim3 dimBlock(TILE_WIDTH, TILE_WIDTH);
@@ -329,13 +313,6 @@ __global__ void GaussianMask(unsigned char *output, const unsigned char *src, in
 		0.0002, 0.0837, 0.6187, 0.0837, 0.0002,
 		0.0000, 0.0113, 0.0837, 0.0113, 0.0000,
 		0.0000, 0.0000, 0.0002, 0.0000, 0.0000 };
-
-	/*float gaussianMask[] = { 0.0304, 0.0501, 0, 0, 0 ,
-	 0.0501, 0.1771, 0.0519, 0, 0 ,
-	 0, 0.0519, 0.1771, 0.0519, 0 ,
-	 0, 0, 0.0519, 0.1771, 0.0501 ,
-	 0, 0, 0, 0.0501, 0.0304 };
-*/
 
 	int x = blockIdx.x * TILE_WIDTH + threadIdx.x;
 	int y = blockIdx.y * TILE_WIDTH + threadIdx.y;
